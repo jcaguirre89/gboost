@@ -1,4 +1,4 @@
-from sklearn.base import clone, BaseEstimator, RegressorMixin
+from sklearn.base import clone, BaseEstimator
 from sklearn.tree import DecisionTreeRegressor
 from sklearn.dummy import DummyRegressor
 
@@ -26,10 +26,10 @@ class GBoost(BaseEstimator):
     Basic implementation of Gradient Boosting that performs regression with 
     MSE or MAE loss functions, and classification with logistic loss function.
     
-    :param n_estimators: int. Number of trees to train
-    :param learning_rate: float. shrinkage parameter. Contribution of each tree to overall estimator
-    :param tol: float. Tolerance level used in binary classification to convert probabilities to classes
-    :param loss: str. Default='ls'. Can be one of:
+    :param n_estimators: `int`. Number of trees to train
+    :param learning_rate: `float`. shrinkage parameter. Contribution of each tree to overall estimator
+    :param tol: `float`. Tolerance level used in binary classification to convert probabilities to classes
+    :param loss: `str`. Default='ls'. Can be one of:
         - 'ls': Regression with Mean Square Error
         - 'lad': Regression with Mean Absolute Error
         - 'logistic': Binary Classification with Logistic loss.
