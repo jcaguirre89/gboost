@@ -7,7 +7,7 @@ from scipy.special import expit
 
 
 def mse_gradient(y, f):
-    """ Least Squares gradient, also known for GBM as pseudo-residuals """
+    """ Least Squares gradient """
     return y - f
 
 
@@ -50,7 +50,7 @@ class GBoost(BaseEstimator):
         elif loss == 'logistic':
             self.loss = logistic_gradient
         else:
-            raise AttributeError(f'Unknown loss function: {loss}')
+            raise AttributeError('Unknown loss function: {}'.format(loss))
 
     def fit(self, X, y):
         """ Fit estimator to data """
@@ -72,10 +72,10 @@ class GBoost(BaseEstimator):
     def predict(self, X):
         """ Make prediction given feature set. Only use directly for regression """
         # First use the base estimator
-        f0 = self._estimators[0].predict(X)
+        f_0 = self._estimators[0].predict(X)
         # Next add all the individual weak learner's predictions adjusted by the learning rate
-        r = np.sum([self.learning_rate * f.predict(X) for f in self._estimators[1:]], axis=0)
-        return f0 + r
+        boosting = np.sum([self.learning_rate * f.predict(X) for f in self._estimators[1:]], axis=0)
+        return f_0 + boosting
 
 
     def _proba_to_class(self, sample):
@@ -88,6 +88,6 @@ class GBoost(BaseEstimator):
             raise AttributeError('Method only available for binary classification')
 
         # Turn into probability (in domain 0 to 1)
-        probabilities = expit(self.predict(X))
+        predicted_probas = expit(self.predict(X))
         # Now turn probability into class
-        return np.array([self._proba_to_class(sample) for sample in probabilities])
+        return np.array([self._proba_to_class(sample) for sample in predicted_probas])
